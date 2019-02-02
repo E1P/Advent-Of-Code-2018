@@ -1,65 +1,81 @@
 const data = require('./day3-inputs.json');
 
-const formatter = inputs => {
+const formatter = inputs => { // takes claims string and splits into array of formatted claim arrays
   return inputs.split(/\n/).map(input => {
     return input.match(/\d+/g);
   })
 }
 
-const fabricArrMaker = (dims) => {
+const fabricArrMaker = (dims) => { // makes an array of arrays containing '.' to the size provided
   const arr = [];
-  arr.length = dims;
-  arr.fill([]);
+  for (let i = 0; i < dims; i++) {
+    arr[i] = [];
+  }
   arr.forEach((space, index) => {
     for (let i = 0; i < dims; i++) {
-      space[i] = '-';
+      space[i] = '.';
     }
   })
   return arr;
 }
 
-
-const overlapFinder = (claimsArr, fabricArr) => {
-
-  let count = 0;
-  let multiOverlap = 0;
-  let sqInches = 0;
-  
-  fabricArr.forEach(column => {
-    column.forEach(row => {
-      sqInches++
-    })
-  });
+const overlapFinder = (claimsArr, fabricArr) => { // takes given arr of claims and populates given 
+                                                  // fabric arr with each claim represented by claim
+  let count = 0;                                  // number. 'x' represents overlapping claims.
 
   claimsArr.forEach(claim => {
-    const rowStart = +claim[1];
+    const rowStart = +claim[1];  // assign variables with each claim's coordinates
     const rowEnd = +claim[1] + +claim[3];
     const columnStart = +claim[2];
     const columnEnd = +claim[2] + +claim[4];
     
-    // console.log(claim[0], rowStart, rowEnd, columnStart, columnEnd);
     for (let column = columnStart; column < columnEnd; column++) {
       for (let row = rowStart; row < rowEnd; row++) {
-        if (fabricArr[column][row] === '-') {
-          // console.log(fabricArr[column][row], column, row);
-          fabricArr[column][row] = 'o';
-        } else if (fabricArr[column][row] === 'o') {
-          fabricArr[column][row] = 'X';
+        if (fabricArr[column][row] === '.') {
+          fabricArr[column][row] = claim[0];
+        } else if (fabricArr[column][row].match(/[0-9]{1,4}/)) {
+          fabricArr[column][row] = 'x';
           count++;
-        } else if (fabricArr[column][row] = 'X') {
-          multiOverlap++;
         }
       }
     }
   })
-  console.log('Final overlap total > ', count, '- sqInches: ', sqInches, '- multi: ', multiOverlap);
-}
+  console.log('Final overlap total > ', count);
+  return fabricArr;
+};
+
+const claimsChecker = (claimsArr, fabricResult) => { // check each claim against marked fabric to see 
+                                                     // any of its coordinates are marked with 'x'.
+  let freeClaim;
+  claimsArr.forEach(claim => {
+    const rowStart = +claim[1];  // assign variables with each claim's coordinates
+    const rowEnd = +claim[1] + +claim[3];
+    const columnStart = +claim[2];
+    const columnEnd = +claim[2] + +claim[4];
+    let overlapping = false;
+
+    while(!overlapping) {
+      for (let column = columnStart; column < columnEnd; column++) {
+        for (let row = rowStart; row < rowEnd; row++) {
+          if (fabricResult[column][row] === 'x') {
+            overlapping = true;
+          }  
+        }
+      }
+      if(!overlapping) {
+        freeClaim = claim[0];
+      }
+      overlapping = true;
+    }
+  })
+  console.log('Non-overlapped claim: ', freeClaim);
+  return freeClaim;
+};
 
 const elvesClaims = formatter(data);
 const elvesFabric = fabricArrMaker(1000);
+const markedFabric = overlapFinder(elvesClaims, elvesFabric);
 
-overlapFinder(elvesClaims, elvesFabric);
+claimsChecker(elvesClaims, markedFabric);
 
-module.exports = { overlapFinder, fabricArrMaker, formatter };
-
-// #23 @ 301,282: 28x15
+module.exports = { overlapFinder, fabricArrMaker, formatter, claimsChecker };
