@@ -17,7 +17,7 @@ fs.readFile('./day2-inputs.txt', 'utf8', (err, data) => {
     }, {});
     console.log(count2, count3);
     
-    //----------- PART 2 ------------------
+    //----------- PART 2 -----------------
 
     const stringCompare = (str1, str2) => {
       let diff = 0;

@@ -35,4 +35,5 @@ fs.readFile('./day1-inputs.txt', 'utf8', (err, data) => {
     else console.log(`The first repeated freq is ${firstRepeat}.`);
   }
   processor(0, dataArr);
+  
 });
