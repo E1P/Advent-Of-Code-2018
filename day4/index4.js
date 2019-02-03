@@ -38,13 +38,31 @@ const hourTally = logArr => {
     }
     // console.log('minute at end of each item >>> ', minute)
   })
-  console.log(guardZZs);
   return guardZZs;
 };
 
+const findSleepiest = tally => {
+  const tallyArr = []
+  for (let guard in tally) {
+    let sleepyMax = [guard, 0, 0, 0]; // [1]: hour most asleep, [2]: times asleep at that hour [3]: total hours asleep
+    let total = 0;
+    for (let hour in tally[guard]) {
+      total += tally[guard][hour];
+      if (tally[guard][hour] > sleepyMax[2]) {
+        sleepyMax[1] = hour;
+        sleepyMax[2] = tally[guard][hour]; 
+      }
+    }
+    sleepyMax[3] = total;
+    tallyArr.push(sleepyMax);
+  } 
+  return tallyArr;
+}
+
 const chronoLogs = chronologise(data);
-console.log(hourTally(chronoLogs));
+const finalTally = hourTally(chronoLogs);
+const sleepMaxArr = findSleepiest(finalTally);
 
-module.exports = { chronologise, chronoLogs, hourTally };
+console.log(sleepMaxArr);
 
-// [1518-06-12 00:00] Guard #3359 begins shift
+module.exports = { chronologise, chronoLogs, hourTally, findSleepiest, finalTally };
