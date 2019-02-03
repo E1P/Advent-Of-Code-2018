@@ -14,29 +14,24 @@ const hourTally = logArr => {
   let asleep = false;
   const guardZZs = {};
   logArr.forEach((logItem, index) => {
-    if (/Guard/.test(logItem)) {
-      minute = 0;
-      asleep = false;
-      guard = logItem.match(/(?<=#)\d+/)[0];
-      if (!guardZZs[guard]) guardZZs[guard]= {};
-    } else {
-      for (let t = minute; t < 60 && t < +logItem.match(/(?<=:)\d+/)[0]; t++) {
-        if (!asleep) guardZZs[guard][t] = (guardZZs[guard][t] || 0);
-        else guardZZs[guard][t] = (guardZZs[guard][t] || 0) + 1;
-        // console.log(index, minute, guardZZs[guard][t]);
-        minute++;
+    if (/Guard/.test(logItem)) { // if log contains 'guard', it must be shift start log
+      minute = 0; // reset minute for start of shift
+      asleep = false;  // make sure asleep variable starts ar false
+      guard = logItem.match(/(?<=#)\d+/)[0]; // if logItem shows guard starting, record guard number
+      if (!guardZZs[guard]) guardZZs[guard]= {}; 
+    } else { // if log text doesn't include guard it must be a sleep state log
+      for (let t = minute; t < 60 && t < +logItem.match(/(?<=:)\d+/)[0]; t++) { // count from minute until time in log
+        if (!asleep) guardZZs[guard][t] = (guardZZs[guard][t] || 0); // if awake, add 0
+        else guardZZs[guard][t] = (guardZZs[guard][t] || 0) + 1; // if asleep, add 1
+        minute++; // minute variable increments total minutes using closure
       }
-      asleep = !asleep;
-      // console.log('Time of sleep change', logItem.match(/(?<=:)\d+/)[0])
-      // console.log('Guard asleep? > ', asleep);
-      if (!logArr[index+1] || /Guard/.test(logArr[index+1])) {
+      asleep = !asleep; // change sleep state due to for loop reaching time of next log
+      if (!logArr[index+1] || /Guard/.test(logArr[index+1])) { // if not at end of hour and next log is shift start, fill remaining minutes with current state
         for (minute; minute < 60; minute++) {
           guardZZs[guard][minute] = (guardZZs[guard][minute] || 0);
-          // console.log(index, minute, guardZZs[guard][minute]);
         };
       }; 
     }
-    // console.log('minute at end of each item >>> ', minute)
   })
   return guardZZs;
 };
