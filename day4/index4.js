@@ -23,20 +23,20 @@ const hourTally = logArr => {
       for (let t = minute; t < 60 && t < +logItem.match(/(?<=:)\d+/)[0]; t++) {
         if (!asleep) guardZZs[guard][t] = (guardZZs[guard][t] || 0);
         else guardZZs[guard][t] = (guardZZs[guard][t] || 0) + 1;
-        console.log(index, minute, guardZZs[guard][t]);
+        // console.log(index, minute, guardZZs[guard][t]);
         minute++;
       }
       asleep = !asleep;
-      console.log('Time of sleep change', logItem.match(/(?<=:)\d+/)[0])
-      console.log('Guard asleep? > ', asleep);
+      // console.log('Time of sleep change', logItem.match(/(?<=:)\d+/)[0])
+      // console.log('Guard asleep? > ', asleep);
       if (!logArr[index+1] || /Guard/.test(logArr[index+1])) {
         for (minute; minute < 60; minute++) {
           guardZZs[guard][minute] = (guardZZs[guard][minute] || 0);
-          console.log(index, minute, guardZZs[guard][minute]);
+          // console.log(index, minute, guardZZs[guard][minute]);
         };
       }; 
     }
-    console.log('minute at end of each item >>> ', minute)
+    // console.log('minute at end of each item >>> ', minute)
   })
   console.log(guardZZs);
   return guardZZs;

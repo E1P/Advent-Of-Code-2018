@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { chronologise, chronoLogs, hourTally } = require('../day4/index4.js');
 
-describe.only('Day 4', () => {
+describe('Day 4', () => {
   describe('chronologise()', () => {
     it('will return all logs in chronological order by month and day', () => {
       const guardLogs = "[1518-06-12 00:00] Guard #3359 begins shift\n[1518-10-08 00:19] wakes up\n[1518-07-21 00:53] wakes up\n[1518-06-07 00:26] falls asleep\n[1518-07-01 00:50] wakes up";
@@ -14,13 +14,20 @@ describe.only('Day 4', () => {
       expect(chronologise(guardLogs)).to.eql(orderedLogs);
     });
   });
-  describe('hourTally()', () => {
+  describe.only('hourTally()', () => {
     it('should tally sleep data for a single guard\'s shift, with "0" for awake and "1" for asleep', () => {
-      console.log('Sliced logs: ', chronoLogs.slice(0, 7));
+      // console.log('Sliced logs: ', chronoLogs.slice(0, 7));
       const guard1201mins = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:1,15:1,16:1,17:1,18:1,19:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,28:1,29:1,30:0,31:0,32:0,33:0,34:0,35:0,36:0,37:1,38:1,39:1,40:1,41:1,42:0,43:0,44:0,45:0,46:0,47:0,48:0,49:0,50:1,51:1,52:1,53:0,54:0,55:0,56:0,57:0,58:0,59:0};
       expect(hourTally(chronoLogs.slice(0, 7))).to.be.an('object');
       expect(hourTally(chronoLogs.slice(0, 1))).to.eql({1201: {}});
       expect(hourTally(chronoLogs.slice(0, 7))).to.eql({1201: guard1201mins});
+    });
+    it('should tally sleep data for two shifts of a single guard', () => {
+      const guard1201shiftsX2 = chronoLogs.slice(0, 7).concat(chronoLogs.slice(29, 32));
+      const guard1201X2shiftMins = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:1,15:1,16:1,17:1,18:1,19:1,20:1,21:1,22:1,23:1,24:1,25:2,26:2,27:2,28:1,29:1,30:0,31:0,32:0,33:0,34:0,35:0,36:0,37:1,38:1,39:1,40:1,41:1,42:0,43:0,44:0,45:0,46:0,47:0,48:0,49:0,50:1,51:1,52:1,53:0,54:0,55:0,56:0,57:0,58:0,59:0};
+      expect(hourTally(guard1201shiftsX2)).to.be.an('object');
+      expect(hourTally(guard1201shiftsX2.slice(0, 1))).to.eql({1201: {}});
+      expect(hourTally(guard1201shiftsX2)).to.eql({1201: guard1201X2shiftMins});
     });
   });
 });
