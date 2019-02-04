@@ -11,7 +11,7 @@
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "test": "mocha ./spec/*.spec.js"
+    "test": "mocha ./spec/index5.spec.js"
   },
   "repository": {
     "type": "git",

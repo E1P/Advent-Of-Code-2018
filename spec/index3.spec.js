@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { overlapFinder, fabricArrMaker, formatter, claimsChecker } = require('../day3/index3.js');
 
-describe('Day 3', () => {
+xdescribe('Day 3', () => {
   describe('Functions', () => {
     it('all should be functions', () => {
       expect(overlapFinder).to.be.a('function');

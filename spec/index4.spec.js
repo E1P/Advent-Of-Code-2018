@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { chronologise, chronoLogs, hourTally, findSleepiest, finalTally } = require('../day4/index4.js');
 
-describe('Day 4', () => {
+xdescribe('Day 4', () => {
   describe('chronologise()', () => {
     it('will return all logs in chronological order by month and day', () => {
       const guardLogs = "[1518-06-12 00:00] Guard #3359 begins shift\n[1518-10-08 00:19] wakes up\n[1518-07-21 00:53] wakes up\n[1518-06-07 00:26] falls asleep\n[1518-07-01 00:50] wakes up";
