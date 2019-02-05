@@ -1,30 +1,42 @@
 const data = require('./day5-input.json');
 
-count = 0;
-
-const recursiveDestruct = input => {
-  count++;
-  console.log(count);
-  const inputLength = input.length;
-  if (!inputLength) return 0;
-  if (inputLength === 1) return 1;
-  for (let i = 0; i < inputLength-1; i++) {
-    let char1 = input[i].charCodeAt(0);
-    let char2 = input[i+1].charCodeAt(0);
-    if (char1 === char2 + 32 || char1 === char2 - 32) {
-      if (inputLength === 2) return 0;
-      let slicedInput;
-      if (i === inputLength -2) {
-        slicedInput = input.slice(0, i);
-      } else {
-        slicedInput = input.slice(0, i) + input.slice(i+2);
+const polymerDestroyer = input => {
+  
+  const recursiveDestruct = string => {
+    let foundStar = false;
+    let stringLength = string.length;
+    if (!stringLength) return 0;
+    if (stringLength === 1) return 1;
+    for (let i = 0; string[i+1] !== undefined; i++) {
+      let char1 = string[i].charCodeAt(0);
+      let char2 = string[i+1].charCodeAt(0);
+      if (char1 === char2 + 32 || char1 === char2 - 32) {
+        if (stringLength === 2) return 0;
+        string = string.slice(0, i) + '*' + string.slice(i+1);
+        foundStar = true;
+        i+=1;
       }
-      return recursiveDestruct(slicedInput);
     }
-  }
-  return inputLength;
+    string = string.replace(/\*./g, '');
+    if (foundStar) return recursiveDestruct(string);
+    else {
+      return string.length;
+    }
+  };
+  return recursiveDestruct(input);
 }
 
-console.log('Final length = ', recursiveDestruct(data))
+const unitRemover = input => {
+  const polymerVersions = [];
+  let polymer;
+  for(let i = 65; i < 91; i++) {
+    let regex = new RegExp(String.fromCharCode(i), 'gi');
+    polymer = input.replace(regex, '');
+    polymerVersions.push(polymerDestroyer(polymer));
+  }
+  return Math.min(...polymerVersions);
+} 
 
-module.exports = { recursiveDestruct }
+console.log('Shortest polymer length = ', unitRemover(data));
+
+module.exports = { polymerDestroyer}
