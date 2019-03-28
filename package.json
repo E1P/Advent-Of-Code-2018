@@ -5,13 +5,15 @@
   "main": "Index1.js",
   "dependencies": {
     "chai": "^4.2.0",
+    "jest": "^24.5.0",
     "sinon": "^7.2.3"
   },
   "devDependencies": {
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "test": "mocha ./spec/index5.spec.js"
+    "precommit": "jest && eslint .",
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
