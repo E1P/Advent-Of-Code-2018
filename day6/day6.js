@@ -13,3 +13,15 @@ exports.getManhattan = coOrds => {
   const y = Math.abs(coOrds[0][1] - coOrds[1][1]);
   return x + y;
 };
+
+exports.findClosest = array => {
+  return array.reduce((grid, coOrd, index) => {
+    const letter = String.fromCharCode(index + 97);
+    const distances = [];
+    for (x = 0; x <= 9; x++) {
+      for (y = 0; y <= 9; y++) {
+        getManhattan([x, y], coOrd);
+      }
+    }
+  }, []);
+};
