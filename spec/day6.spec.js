@@ -7,7 +7,7 @@ describe("Day6 Advent of Code", () => {
     });
   });
 
-  describe("getManhatten", () => {
+  describe("getManhattan", () => {
     it("Takes a pair of coordinates and returns the Manhatten distance between them", () => {
       expect(getManhattan([[0, 1], [0, 3]])).toBe(2);
       expect(getManhattan([[3, 5], [1, 4]])).toBe(3);
