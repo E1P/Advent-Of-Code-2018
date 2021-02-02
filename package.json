@@ -5,11 +5,11 @@
   "main": "Index1.js",
   "dependencies": {
     "chai": "^4.2.0",
-    "jest": "^24.5.0",
-    "sinon": "^7.2.3"
+    "jest": "^26.6.3",
+    "sinon": "^9.2.4"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^8.2.1"
   },
   "scripts": {
     "precommit": "jest && eslint .",
